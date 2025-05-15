@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
             provider: "novita",
-            model: "deepseek-ai/DeepSeek-V3-0324",
+            model: "google/flan-t5-small",
             messages: [
                 {
                     role: "user",
