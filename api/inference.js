@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     body: JSON.stringify({ inputs: "Hello" }),
   });
   
-  res.status(200).send(hfRes);
   const data = await hfRes.json();
+  res.status(200).send(hfRes);
   res.status(200).json(data);
 }
