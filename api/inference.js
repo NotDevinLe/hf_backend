@@ -1,19 +1,15 @@
-import { InferenceClient } from "@huggingface/inference";
-
 export default async function handler(req, res) {
-  const client = new InferenceClient(`${process.env.hf_api_key}`);
-  
-  const chatCompletion = await client.chatCompletion({
-      provider: "novita",
-      model: "Qwen/Qwen3-235B-A22B",
-      messages: [
-          {
-              role: "user",
-              content: "What is the capital of France?",
-          },
-      ],
-      max_tokens: 512,
+  const response = await fetch("https://api-inference.huggingface.co/models/tiiuae/falcon-rw-1b", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.hf_api_key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inputs: "Hello, how are you?",
+    }),
   });
-  
-  console.log(chatCompletion.choices[0].message);
+
+  const data = await response.json();
+  res.status(200).json(data);
 }
