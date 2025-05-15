@@ -1,23 +1,19 @@
+import { InferenceClient } from "@huggingface/inference";
+
 export default async function handler(req, res) {
-  const response = await fetch(
-    "https://router.huggingface.co/novita/v3/openai/chat/completions",
-    {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${process.env.hf_api_key}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            provider: "novita",
-            model: "google/flan-t5-small",
-            messages: [
-                {
-                    role: "user",
-                    content: "How many 'G's in 'huggingface'?",
-                },
-            ],
-        }),
-    }
-);
-console.log(await response.json());
+  const client = new InferenceClient(`${process.env.hf_api_key}`);
+  
+  const chatCompletion = await client.chatCompletion({
+      provider: "novita",
+      model: "Qwen/Qwen3-235B-A22B",
+      messages: [
+          {
+              role: "user",
+              content: "What is the capital of France?",
+          },
+      ],
+      max_tokens: 512,
+  });
+  
+  console.log(chatCompletion.choices[0].message);
 }
