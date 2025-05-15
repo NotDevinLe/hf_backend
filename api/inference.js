@@ -1,23 +1,24 @@
 export default async function handler(req, res) {
   const response = await fetch(
-    "https://router.huggingface.co/novita/v3/openai/chat/completions",
+    "https://api.openai.com/v1/chat/completions",
     {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${process.env.hf_api_key}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            provider: "novita",
-            model: "deepseek-ai/DeepSeek-V3-0324",
-            messages: [
-                {
-                    role: "user",
-                    content: "How many 'G's in 'huggingface'?",
-                },
-            ],
-        }),
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [
+          {
+            role: "user",
+            content: "How many 'G's in 'huggingface'?",
+          },
+        ],
+      }),
     }
-);
-console.log(await response.json());
+  );
+
+  const data = await response.json();
+  res.status(200).json(data);
 }
