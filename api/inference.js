@@ -1,16 +1,23 @@
 export default async function handler(req, res) {
-  // const { input } = req.body;
-
-  const hfRes = await fetch('https://api-inference.huggingface.co/models/deepseek-ai/DeepSeek-V3-0324', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.hf_api_key}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ inputs: "Hello" }),
-  });
-  
-  const data = await hfRes.json();
-  res.status(200).send(hfRes);
-  res.status(200).json(data);
+  const response = await fetch(
+    "https://router.huggingface.co/novita/v3/openai/chat/completions",
+    {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${process.env.hf_api_key}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            provider: "novita",
+            model: "deepseek-ai/DeepSeek-V3-0324",
+            messages: [
+                {
+                    role: "user",
+                    content: "How many 'G's in 'huggingface'?",
+                },
+            ],
+        }),
+    }
+);
+console.log(await response.json());
 }
