@@ -9,7 +9,10 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Process actual POST request
+  // Get prompt from frontend
+  const { prompt } = req.body;
+
+  // Process actual POST request to OpenAI
   const response = await fetch(
     "https://api.openai.com/v1/chat/completions",
     {
@@ -23,7 +26,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: "How many 'G's in 'huggingface'?",
+            content: prompt,  // ✅ Use prompt from frontend
           },
         ],
       }),
@@ -31,5 +34,5 @@ export default async function handler(req, res) {
   );
 
   const data = await response.json();
-  res.send(data)
+  return res.status(200).json(data);
 }
